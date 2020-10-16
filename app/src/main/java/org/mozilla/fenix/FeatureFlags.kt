@@ -50,4 +50,9 @@ object FeatureFlags {
      * Enables ETP cookie purging
      */
     val etpCookiePurging = Config.channel.isNightlyOrDebug
+
+    /**
+     * Enables additional swipe gestures on the browser chrome.
+     */
+    val browserChromeGestures = Config.channel.isNightlyOrDebug
 }
