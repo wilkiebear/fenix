@@ -19,7 +19,7 @@ import mozilla.components.support.migration.state.MigrationStore
 import org.mozilla.fenix.BuildConfig
 import org.mozilla.fenix.Config
 import org.mozilla.fenix.HomeActivity
-import org.mozilla.fenix.StrictModeManager
+import org.mozilla.fenix.perf.StrictModeManager
 import org.mozilla.fenix.components.metrics.AppStartupTelemetry
 import org.mozilla.fenix.ext.settings
 import org.mozilla.fenix.perf.lazyMonitored
@@ -54,14 +54,12 @@ class Components(private val context: Context) {
     }
     val services by lazyMonitored { Services(context, backgroundServices.accountManager) }
     val core by lazyMonitored { Core(context, analytics.crashReporter, strictMode) }
-    val search by lazyMonitored { Search(context) }
     val useCases by lazyMonitored {
         UseCases(
             context,
             core.engine,
             core.sessionManager,
             core.store,
-            search.searchEngineManager,
             core.webAppShortcutManager,
             core.topSitesStorage
         )
@@ -70,7 +68,9 @@ class Components(private val context: Context) {
         IntentProcessors(
             context,
             core.sessionManager,
+            core.store,
             useCases.sessionUseCases,
+            useCases.tabsUseCases,
             useCases.searchUseCases,
             core.relationChecker,
             core.customTabsStore,
@@ -117,7 +117,7 @@ class Components(private val context: Context) {
             onNotificationClickIntent = Intent(context, HomeActivity::class.java).apply {
                 action = Intent.ACTION_VIEW
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                data = "fenix://settings_addon_manager".toUri()
+                data = "${BuildConfig.DEEP_LINK_SCHEME}://settings_addon_manager".toUri()
             }
         )
     }

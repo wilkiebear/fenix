@@ -20,6 +20,10 @@
     <!-- No Private Tabs Message Description -->
     <string name="no_private_tabs_description">Ovdje će se prikazati tvoje privatne kartice.</string>
 
+    <!-- Default title for pinned Baidu top site that links to Baidu home page  -->
+    <string name="default_top_site_baidu">Baidu</string>
+    <!-- Default title for pinned JD top site that links to JD home page  -->
+    <string name="default_top_site_jd">JD</string>
     <!-- Message announced to the user when tab tray is selected with 1 tab -->
     <string name="open_tab_tray_single">1 otvorena kartica. Dodirni za prebacivanje kartica.</string>
     <!-- Message announced to the user when tab tray is selected with 0 or 2+ tabs -->
@@ -92,6 +96,13 @@
     <!-- Text for the negative action button to dismiss the Close Tabs Banner. -->
     <string name="tab_tray_close_tabs_banner_negative_button_text">Odbaci</string>
 
+    <!-- Text for the banner message to tell users about our grid view feature. -->
+    <string name="tab_tray_grid_view_banner_message">Promijeni raspored otvorenih kartica. Idi u postavke i odaberi mrežu pod prikazom kartica.</string>
+    <!-- Text for the positive action button to go to Settings for auto close tabs. -->
+    <string name="tab_tray_grid_view_banner_positive_button_text">Idi u postavke</string>
+    <!-- Text for the negative action button to dismiss the Close Tabs Banner. -->
+    <string name="tab_tray_grid_view_banner_negative_button_text">Odbaci</string>
+
     <!-- Home screen icons - Long press shortcuts -->
     <!-- Shortcut action to open new tab -->
     <string name="home_screen_shortcut_open_new_tab_2">Nova kartica</string>
@@ -142,8 +153,6 @@
     <string name="browser_menu_find_in_page">Pronađi na stranici</string>
     <!-- Browser menu button that creates a private tab -->
     <string name="browser_menu_private_tab">Privatna kartica</string>
-    <!-- Browser menu button that creates a new tab -->
-    <string name="browser_menu_new_tab">Nova kartica</string>
     <!-- Browser menu button that saves the current tab to a collection -->
     <string name="browser_menu_save_to_collection_2">Spremi u zbirku</string>
     <!-- Browser menu button that open a share menu to share the current site -->
@@ -352,6 +361,12 @@
     <!-- Toast shown after confirming the custom add-on collection configuration -->
     <string name="toast_customize_addon_collection_done">Izmijenjena je kolekcija dodataka. Napuštanje aplikacije za primjenu izmjena…</string>
 
+    <!-- Add-on Installation from AMO-->
+    <!-- Error displayed when user attempts to install an add-on from AMO (addons.mozilla.org) that is not supported -->
+    <string name="addon_not_supported_error">Dodatak nije podržan</string>
+    <!-- Error displayed when user attempts to install an add-on from AMO (addons.mozilla.org) that is already installed -->
+    <string name="addon_already_installed">Dodatak je već instaliran</string>
+
     <!-- Account Preferences -->
     <!-- Preference for triggering sync -->
     <string name="preferences_sync_now">Sinkroniziraj sada</string>
@@ -431,6 +446,10 @@
     <string name="preferences_marketing_data">Marketinški podaci</string>
     <!-- Preference description for marketing data collection, parameter is the app name (e.g. Firefox) -->
     <string name="preferences_marketing_data_description">Dijeli podatke o funkcijama koje upotrebljavaš u %1$s s Leanplumom, našim pružateljem usluga mobilnog marketinga.</string>
+    <!-- Title for studies preferences -->
+    <string name="preference_experiments_2">Istraživanja</string>
+    <!-- Summary for studies preferences -->
+    <string name="preference_experiments_summary_2">Omogućuje Mozilli instalaciju i pokretanje istraživanja</string>
     <!-- Title for experiments preferences -->
     <string name="preference_experiments">Eksperimenti</string>
 
@@ -583,6 +602,8 @@
     <string name="tab_tray_title">Otvorene kartice</string>
     <!-- Text shown in the menu for saving tabs to a collection -->
     <string name="tab_tray_menu_item_save">Spremi u zbirku</string>
+    <!-- Text shown in the menu for the collection selector -->
+    <string name="tab_tray_menu_select">Odaberi</string>
     <!-- Text shown in the menu for sharing all tabs -->
     <string name="tab_tray_menu_item_share">Podijeli sve kartice</string>
     <!-- Text shown in the menu to view recently closed tabs -->
@@ -597,8 +618,18 @@
     <string name="tab_tray_menu_home">Idi na početnu</string>
     <!-- Shortcut action to toggle private mode -->
     <string name="tab_tray_menu_toggle">Promijeni vrstu kartice</string>
+    <!-- Text shown in the multiselect menu for bookmarking selected tabs. -->
+    <string name="tab_tray_multiselect_menu_item_bookmark">Zabilježi</string>
+    <!-- Text shown in the multiselect menu for closing selected tabs. -->
+    <string name="tab_tray_multiselect_menu_item_close">Zatvori</string>
+    <!-- Content description for tabs tray multiselect share button -->
+    <string name="tab_tray_multiselect_share_content_description">Podijeli odabrane kartice</string>
+    <!-- Content description for tabs tray multiselect menu -->
+    <string name="tab_tray_multiselect_menu_content_description">Izbornik odabranih kartica</string>
     <!-- Content description (not visible, for screen readers etc.): Removes tab from collection button. Removes the selected tab from collection when pressed -->
     <string name="remove_tab_from_collection">Ukloni karticu iz zbirke</string>
+    <!-- Text for button to enter multiselect mode in tabs tray -->
+    <string name="tabs_tray_select_tabs">Odaberi kartice</string>
     <!-- Content description (not visible, for screen readers etc.): Close tab button. Closes the current session when pressed -->
     <string name="close_tab">Zatvori karticu</string>
     <!-- Content description (not visible, for screen readers etc.): Close tab <title> button. First parameter is tab title  -->
@@ -697,18 +728,22 @@
     <string name="download_delete_all">Izbriši preuzimanja</string>
     <!-- Text for the dialog to confirm clearing all downloads -->
     <string name="download_delete_all_dialog">Sigurno želiš očistiti svoja preuzimanja?</string>
-    <!-- Text for the snackbar to confirm that multiple downloads items have been deleted -->
-    <string name="download_delete_multiple_items_snackbar">Preuzimanja su izbrisana</string>
+    <!-- Text for the snackbar to confirm that multiple downloads items have been removed -->
+    <string name="download_delete_multiple_items_snackbar_1">Uklonjena preuzimanja</string>
+    <!-- Text for the snackbar to confirm that a single download item has been removed. The first parameter is the name of the download item. -->
+    <string name="download_delete_single_item_snackbar">%1$s uklonjen</string>
     <!-- Text shown when no download exists -->
-    <string name="download_empty_message">Ovdje nema preuzimanja</string>
+    <string name="download_empty_message_1">Nema preuzetih datoteka</string>
     <!-- History multi select title in app bar
     The first parameter is the number of downloads selected -->
     <string name="download_multi_select_title">Odabrano: %1$d</string>
 
     <!-- History overflow menu open in new tab button -->
     <string name="download_menu_open">Otvori</string>
-    <!-- Text for the button to delete a single history item -->
-    <string name="download_delete_item">Izbriši</string>
+
+
+    <!-- Text for the button to remove a single download item -->
+    <string name="download_delete_item_1">Ukloni</string>
 
 
     <!-- Crashes -->
@@ -835,6 +870,8 @@
     <string name="preference_phone_feature_notification">Obavijest</string>
     <!-- Preference for altering the persistent storage access for all websites -->
     <string name="preference_phone_feature_persistent_storage">Trajna pohrana</string>
+    <!-- Preference for altering the EME access for all websites -->
+    <string name="preference_phone_feature_media_key_system_access">Sadržaj kontroliran DRM-om</string>
     <!-- Label that indicates that a permission must be asked always -->
     <string name="preference_option_phone_feature_ask_to_allow">Zatraži dozvolu</string>
     <!-- Label that indicates that a permission must be blocked -->
@@ -976,6 +1013,12 @@
     <string name="snackbar_tab_closed">Kartica je zatvorena</string>
     <!-- Text shown in snackbar when user closes all tabs -->
     <string name="snackbar_tabs_closed">Kartice su zatvorene</string>
+    <!-- Text shown in snackbar when user closes tabs -->
+    <string name="snackbar_message_tabs_closed">Kartice su zatvorene!</string>
+    <!-- Text shown in snackbar when user bookmarks a list of tabs -->
+    <string name="snackbar_message_bookmarks_saved">Zabilješke su spremljene!</string>
+    <!-- Text shown in snackbar action for viewing bookmarks -->
+    <string name="snackbar_message_bookmarks_view">Pogledaj</string>
     <!-- Text shown in snackbar when user adds a site to top sites -->
     <string name="snackbar_added_to_top_sites">Dodano u omiljene stranice!</string>
     <!-- Text shown in snackbar when user closes a private tab -->
@@ -1582,7 +1625,7 @@
     <string name="browser_menu_add_to_top_sites">Dodaj u omiljene stranice</string>
     <!-- text shown before the issuer name to indicate who its verified by, parameter is the name of
      the certificate authority that verified the ticket-->
-    <string name="certificate_info_verified_by">Potvrđeno od: %1$s</string>
+    <string name="certificate_info_verified_by">Potvrđuje: %1$s</string>
     <!-- Login overflow menu delete button -->
     <string name="login_menu_delete_button">Izbriši</string>
     <!-- Login overflow menu edit button -->

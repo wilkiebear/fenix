@@ -10,7 +10,6 @@ import androidx.test.uiautomator.UiDevice
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.mozilla.fenix.FenixApplication
@@ -105,25 +104,6 @@ class SettingsBasicsTest {
         }
     }
 
-    @Ignore("This test works locally, fails on firebase. https://github.com/mozilla-mobile/fenix/issues/8174")
-    @Test
-    fun toggleSearchSuggestions() {
-        // Goes through the settings and changes the search suggestion toggle, then verifies it changes.
-        homeScreen {
-        }.openNavigationToolbar {
-            verifySearchSuggestionsAreMoreThan(1, "mozilla")
-        }.goBack {
-        }.openThreeDotMenu {
-        }.openSettings {
-        }.openSearchSubMenu {
-            disableShowSearchSuggestions()
-        }.goBack {
-        }.goBack {
-        }.openNavigationToolbar {
-            verifySearchSuggestionsAreEqualTo(0, "mozilla")
-        }
-    }
-
     @Test
     fun toggleShowVisitedSitesAndBookmarks() {
         // Bookmarks a few websites, toggles the history and bookmarks setting to off, then verifies if the visited and bookmarked websites do not show in the suggestions.
@@ -204,7 +184,7 @@ class SettingsBasicsTest {
             checkTextSizeOnWebsite(textSizePercentage, fenixApp.components)
         }.openTabDrawer {
         }.openNewTab {
-        }.dismiss {
+        }.dismissSearchBar {
         }.openThreeDotMenu {
         }.openSettings {
         }.openAccessibilitySubMenu {

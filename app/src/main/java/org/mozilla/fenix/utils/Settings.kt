@@ -123,12 +123,6 @@ class Settings(private val appContext: Context) : PreferencesHolder {
     val canShowCfr: Boolean
         get() = (System.currentTimeMillis() - lastCfrShownTimeInMillis) > THREE_DAYS_MS
 
-    var showGridViewInTabsSettings by featureFlagPreference(
-        appContext.getPreferenceKey(R.string.pref_key_show_grid_view_tabs_settings),
-        default = Config.channel.isNightlyOrDebug,
-        featureFlag = FeatureFlags.showGridViewInTabsSettings
-    )
-
     var syncedTabsInTabsTray by featureFlagPreference(
         appContext.getPreferenceKey(R.string.pref_key_synced_tabs_tabs_tray),
         default = false,
@@ -237,7 +231,7 @@ class Settings(private val appContext: Context) : PreferencesHolder {
         default = true
     )
 
-    val isExperimentationEnabled by booleanPreference(
+    var isExperimentationEnabled by booleanPreference(
         appContext.getPreferenceKey(R.string.pref_key_experimentation),
         default = true
     )
@@ -472,6 +466,11 @@ class Settings(private val appContext: Context) : PreferencesHolder {
         true
     )
 
+    val blockRedirectTrackersInCustomTrackingProtection by booleanPreference(
+        appContext.getPreferenceKey(R.string.pref_key_tracking_protection_redirect_trackers),
+        true
+    )
+
     val shouldUseFixedTopToolbar: Boolean
         get() {
             return touchExplorationIsEnabled || switchServiceIsEnabled
@@ -682,6 +681,11 @@ class Settings(private val appContext: Context) : PreferencesHolder {
         default = true
     )
 
+    var shouldShowGridViewBanner by booleanPreference(
+        appContext.getPreferenceKey(R.string.pref_key_should_show_grid_view_banner),
+        default = true
+    )
+
     @VisibleForTesting(otherwise = PRIVATE)
     internal val trackingProtectionOnboardingCount = counterPreference(
         appContext.getPreferenceKey(R.string.pref_key_tracking_protection_onboarding),
@@ -747,7 +751,8 @@ class Settings(private val appContext: Context) : PreferencesHolder {
             camera = getSitePermissionsPhoneFeatureAction(PhoneFeature.CAMERA),
             autoplayAudible = getSitePermissionsPhoneFeatureAutoplayAction(PhoneFeature.AUTOPLAY_AUDIBLE),
             autoplayInaudible = getSitePermissionsPhoneFeatureAutoplayAction(PhoneFeature.AUTOPLAY_INAUDIBLE),
-            persistentStorage = getSitePermissionsPhoneFeatureAction(PhoneFeature.PERSISTENT_STORAGE)
+            persistentStorage = getSitePermissionsPhoneFeatureAction(PhoneFeature.PERSISTENT_STORAGE),
+            mediaKeySystemAccess = getSitePermissionsPhoneFeatureAction(PhoneFeature.MEDIA_KEY_SYSTEM_ACCESS)
         )
     }
 
@@ -758,7 +763,9 @@ class Settings(private val appContext: Context) : PreferencesHolder {
             PhoneFeature.LOCATION,
             PhoneFeature.CAMERA,
             PhoneFeature.AUTOPLAY_AUDIBLE,
-            PhoneFeature.AUTOPLAY_INAUDIBLE
+            PhoneFeature.AUTOPLAY_INAUDIBLE,
+            PhoneFeature.PERSISTENT_STORAGE,
+            PhoneFeature.MEDIA_KEY_SYSTEM_ACCESS
         ).map { it.getPreferenceKey(appContext) }
 
         preferences.registerOnSharedPreferenceChangeListener(lifecycleOwner) { _, key ->
@@ -901,6 +908,16 @@ class Settings(private val appContext: Context) : PreferencesHolder {
 
     var openTabsCount by intPreference(
         appContext.getPreferenceKey(R.string.pref_key_open_tabs_count),
+        0
+    )
+
+    var mobileBookmarksSize by intPreference(
+        appContext.getPreferenceKey(R.string.pref_key_mobile_bookmarks_size),
+        0
+    )
+
+    var desktopBookmarksSize by intPreference(
+        appContext.getPreferenceKey(R.string.pref_key_desktop_bookmarks_size),
         0
     )
 

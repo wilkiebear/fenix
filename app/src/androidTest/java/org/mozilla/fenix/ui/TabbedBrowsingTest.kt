@@ -85,7 +85,7 @@ class TabbedBrowsingTest {
         }.openTabsListThreeDotMenu {
             verifyCloseAllTabsButton()
             verifyShareTabButton()
-            verifySaveCollection()
+            verifySelectTabs()
         }
     }
 
@@ -127,7 +127,7 @@ class TabbedBrowsingTest {
         }.openTabsListThreeDotMenu {
             verifyCloseAllTabsButton()
             verifyShareTabButton()
-            verifySaveCollection()
+            verifySelectTabs()
         }.closeAllTabs {
             verifyNoTabsOpened()
         }
@@ -188,7 +188,7 @@ class TabbedBrowsingTest {
         }.openTabDrawer {
             verifyExistingOpenTabs("Test_Page_1")
         }.openNewTab {
-        }.dismiss { }
+        }.dismissSearchBar { }
     }
 
     @Test
@@ -312,7 +312,7 @@ class TabbedBrowsingTest {
             verifyExistingOpenTabs(defaultWebPage.title)
             verifyCloseTabsButton(defaultWebPage.title)
         }.openNewTab {
-        }.dismiss { }
+        }.dismissSearchBar { }
     }
 
     @Test

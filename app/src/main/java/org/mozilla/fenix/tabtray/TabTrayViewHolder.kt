@@ -5,7 +5,6 @@
 package org.mozilla.fenix.tabtray
 
 import android.view.View
-import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -14,7 +13,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.tab_tray_grid_item.view.*
-import mozilla.components.browser.state.state.MediaState
+import mozilla.components.browser.state.selector.findTabOrCustomTab
 import mozilla.components.browser.state.store.BrowserStore
 import mozilla.components.browser.tabstray.TabViewHolder
 import mozilla.components.browser.tabstray.TabsTrayStyling
@@ -22,24 +21,27 @@ import mozilla.components.browser.tabstray.thumbnail.TabThumbnailView
 import mozilla.components.browser.toolbar.MAX_URI_LENGTH
 import mozilla.components.concept.base.images.ImageLoadRequest
 import mozilla.components.concept.base.images.ImageLoader
+import mozilla.components.concept.engine.mediasession.MediaSession
 import mozilla.components.concept.tabstray.Tab
 import mozilla.components.concept.tabstray.TabsTray
-import mozilla.components.feature.media.ext.pauseIfPlaying
-import mozilla.components.feature.media.ext.playIfPaused
 import mozilla.components.support.base.observer.Observable
 import org.mozilla.fenix.R
 import org.mozilla.fenix.components.metrics.Event
 import org.mozilla.fenix.components.metrics.MetricController
 import org.mozilla.fenix.ext.components
-import org.mozilla.fenix.ext.getMediaStateForSession
 import org.mozilla.fenix.ext.increaseTapArea
 import org.mozilla.fenix.ext.removeAndDisable
 import org.mozilla.fenix.ext.removeTouchDelegate
 import org.mozilla.fenix.ext.settings
 import org.mozilla.fenix.ext.showAndEnable
 import org.mozilla.fenix.ext.toShortUrl
-import org.mozilla.fenix.utils.Do
 import kotlin.math.max
+import mozilla.components.browser.state.state.MediaState
+import mozilla.components.feature.media.ext.pauseIfPlaying
+import mozilla.components.feature.media.ext.playIfPaused
+import org.mozilla.fenix.FeatureFlags.newMediaSessionApi
+import org.mozilla.fenix.ext.getMediaStateForSession
+import org.mozilla.fenix.utils.Do
 
 /**
  * A RecyclerView ViewHolder implementation for "tab" items.
@@ -69,6 +71,7 @@ class TabTrayViewHolder(
     /**
      * Displays the data of the given session and notifies the given observable about events.
      */
+    @Suppress("ComplexMethod", "LongMethod")
     override fun bind(
         tab: Tab,
         isSelected: Boolean,
@@ -95,49 +98,98 @@ class TabTrayViewHolder(
 
         // Media state
         playPauseButtonView.increaseTapArea(PLAY_PAUSE_BUTTON_EXTRA_DPS)
-        with(playPauseButtonView) {
-            invalidate()
-            Do exhaustive when (store.state.getMediaStateForSession(tab.id)) {
-                MediaState.State.PAUSED -> {
-                    showAndEnable()
-                    contentDescription =
-                        context.getString(R.string.mozac_feature_media_notification_action_play)
-                    setImageDrawable(
-                        AppCompatResources.getDrawable(context, R.drawable.media_state_play)
-                    )
+
+        if (newMediaSessionApi) {
+            with(playPauseButtonView) {
+                invalidate()
+                val sessionState = store.state.findTabOrCustomTab(tab.id)
+                when (sessionState?.mediaSessionState?.playbackState) {
+                    MediaSession.PlaybackState.PAUSED -> {
+                        showAndEnable()
+                        contentDescription =
+                            context.getString(R.string.mozac_feature_media_notification_action_play)
+                        setImageDrawable(
+                            AppCompatResources.getDrawable(context, R.drawable.media_state_play)
+                        )
+                    }
+
+                    MediaSession.PlaybackState.PLAYING -> {
+                        showAndEnable()
+                        contentDescription =
+                            context.getString(R.string.mozac_feature_media_notification_action_pause)
+                        setImageDrawable(
+                            AppCompatResources.getDrawable(context, R.drawable.media_state_pause)
+                        )
+                    }
+
+                    else -> {
+                        removeTouchDelegate()
+                        removeAndDisable()
+                    }
                 }
 
-                MediaState.State.PLAYING -> {
-                    showAndEnable()
-                    contentDescription =
-                        context.getString(R.string.mozac_feature_media_notification_action_pause)
-                    setImageDrawable(
-                        AppCompatResources.getDrawable(context, R.drawable.media_state_pause)
-                    )
-                }
+                setOnClickListener {
+                    when (sessionState?.mediaSessionState?.playbackState) {
+                        MediaSession.PlaybackState.PLAYING -> {
+                            metrics.track(Event.TabMediaPause)
+                            sessionState.mediaSessionState?.controller?.pause()
+                        }
 
-                MediaState.State.NONE -> {
-                    removeTouchDelegate()
-                    removeAndDisable()
+                        MediaSession.PlaybackState.PAUSED -> {
+                            metrics.track(Event.TabMediaPlay)
+                            sessionState.mediaSessionState?.controller?.play()
+                        }
+                        else -> throw AssertionError(
+                            "Play/Pause button clicked without play/pause state."
+                        )
+                    }
                 }
             }
-        }
+        } else {
+            with(playPauseButtonView) {
+                invalidate()
+                Do exhaustive when (store.state.getMediaStateForSession(tab.id)) {
+                    MediaState.State.PAUSED -> {
+                        showAndEnable()
+                        contentDescription =
+                            context.getString(R.string.mozac_feature_media_notification_action_play)
+                        setImageDrawable(
+                            AppCompatResources.getDrawable(context, R.drawable.media_state_play)
+                        )
+                    }
 
-        playPauseButtonView.setOnClickListener {
-            Do exhaustive when (store.state.getMediaStateForSession(tab.id)) {
-                MediaState.State.PLAYING -> {
-                    metrics.track(Event.TabMediaPause)
-                    store.state.media.pauseIfPlaying()
+                    MediaState.State.PLAYING -> {
+                        showAndEnable()
+                        contentDescription =
+                            context.getString(R.string.mozac_feature_media_notification_action_pause)
+                        setImageDrawable(
+                            AppCompatResources.getDrawable(context, R.drawable.media_state_pause)
+                        )
+                    }
+
+                    MediaState.State.NONE -> {
+                        removeTouchDelegate()
+                        removeAndDisable()
+                    }
                 }
+            }
 
-                MediaState.State.PAUSED -> {
-                    metrics.track(Event.TabMediaPlay)
-                    store.state.media.playIfPaused()
+            playPauseButtonView.setOnClickListener {
+                Do exhaustive when (store.state.getMediaStateForSession(tab.id)) {
+                    MediaState.State.PLAYING -> {
+                        metrics.track(Event.TabMediaPause)
+                        store.state.media.pauseIfPlaying()
+                    }
+
+                    MediaState.State.PAUSED -> {
+                        metrics.track(Event.TabMediaPlay)
+                        store.state.media.playIfPaused()
+                    }
+
+                    MediaState.State.NONE -> throw AssertionError(
+                        "Play/Pause button clicked without play/pause state."
+                    )
                 }
-
-                MediaState.State.NONE -> throw AssertionError(
-                    "Play/Pause button clicked without play/pause state."
-                )
             }
         }
 
@@ -175,10 +227,9 @@ class TabTrayViewHolder(
             .take(MAX_URI_LENGTH)
     }
 
-    @VisibleForTesting
-    internal fun updateSelectedTabIndicator(isSelected: Boolean) {
+    override fun updateSelectedTabIndicator(showAsSelected: Boolean) {
         if (itemView.context.settings().gridTabView) {
-            itemView.tab_tray_grid_item.background = if (isSelected) {
+            itemView.tab_tray_grid_item.background = if (showAsSelected) {
                 AppCompatResources.getDrawable(itemView.context, R.drawable.tab_tray_grid_item_selected_border)
             } else {
                 null
@@ -186,7 +237,7 @@ class TabTrayViewHolder(
             return
         }
 
-        val color = if (isSelected) {
+        val color = if (showAsSelected) {
             R.color.tab_tray_item_selected_background_normal_theme
         } else {
             R.color.tab_tray_item_background_normal_theme
@@ -217,26 +268,6 @@ class TabTrayViewHolder(
             )
         }
         imageLoader.loadIntoView(thumbnailView, ImageLoadRequest(id, thumbnailSize))
-    }
-
-    internal fun updateAccessibilityRowInfo(item: View, newIndex: Int, isSelected: Boolean) {
-        item.accessibilityDelegate = object : View.AccessibilityDelegate() {
-            override fun onInitializeAccessibilityNodeInfo(
-                host: View?,
-                info: AccessibilityNodeInfo?
-            ) {
-                super.onInitializeAccessibilityNodeInfo(host, info)
-                info?.collectionItemInfo =
-                    AccessibilityNodeInfo.CollectionItemInfo.obtain(
-                        newIndex,
-                        1,
-                        1,
-                        1,
-                        false,
-                        isSelected
-                    )
-            }
-        }
     }
 
     companion object {

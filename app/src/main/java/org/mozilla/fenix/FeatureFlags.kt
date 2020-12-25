@@ -22,27 +22,30 @@ object FeatureFlags {
     val syncedTabsInTabsTray = Config.channel.isNightlyOrDebug
 
     /**
-     * Shows the grid view settings for the tabs tray.
-     */
-    val showGridViewInTabsSettings = Config.channel.isNightlyOrDebug
-
-    /**
      * Enables downloads with external download managers.
      */
     const val externalDownloadManager = true
 
     /**
-     * Enables swipe to delete in bookmarks
+     * Enables the Nimbus experiments library, especially the settings toggle to opt-out of
+     * all experiments.
      */
-    val bookmarkSwipeToDelete = Config.channel.isNightlyOrDebug
+    // IMPORTANT: Only turn this back on once the following issues are resolved:
+    // - https://github.com/mozilla-mobile/fenix/issues/17086: Calls to
+    // getExperimentBranch seem to block on updateExperiments causing a
+    // large performance regression loading the home screen.
+    // - https://github.com/mozilla-mobile/fenix/issues/17143: Despite
+    // having wrapped getExperimentBranch/withExperiments in a catch-all
+    // users are still experiencing crashes.
+    const val nimbusExperiments = false
 
     /**
-     * Enables ETP cookie purging
+     * Enables the new MediaSession API.
      */
-    val etpCookiePurging = Config.channel.isNightlyOrDebug
+    val newMediaSessionApi = Config.channel.isNightlyOrDebug
 
     /**
-     * Returns user to browser on cold start if they have open tabs
+     * Enabled showing site permission indicators in the toolbars.
      */
-    val returnToBrowserOnColdStart = Config.channel.isNightlyOrDebug
+    val permissionIndicatorsToolbar = Config.channel.isNightlyOrDebug
 }

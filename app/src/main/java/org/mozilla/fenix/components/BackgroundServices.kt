@@ -36,7 +36,7 @@ import mozilla.components.service.sync.logins.SyncableLoginsStorage
 import mozilla.components.support.utils.RunWhenReadyQueue
 import org.mozilla.fenix.Config
 import org.mozilla.fenix.R
-import org.mozilla.fenix.StrictModeManager
+import org.mozilla.fenix.perf.StrictModeManager
 import org.mozilla.fenix.components.metrics.Event
 import org.mozilla.fenix.components.metrics.MetricController
 import org.mozilla.fenix.ext.components
@@ -157,7 +157,7 @@ class BackgroundServices(
 
         // Enable push if it's configured.
         push.feature?.let { autoPushFeature ->
-            FxaPushSupportFeature(context, accountManager, autoPushFeature)
+            FxaPushSupportFeature(context, accountManager, autoPushFeature, crashReporter)
         }
 
         SendTabFeature(accountManager) { device, tabs ->

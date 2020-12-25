@@ -19,6 +19,10 @@
     <!-- No Private Tabs Message Description -->
     <string name="no_private_tabs_description">Waše priwatne rejtariki se how wócyniju.</string>
 
+    <!-- Default title for pinned Baidu top site that links to Baidu home page  -->
+    <string name="default_top_site_baidu">Baidu</string>
+    <!-- Default title for pinned JD top site that links to JD home page  -->
+    <string name="default_top_site_jd">JD</string>
     <!-- Message announced to the user when tab tray is selected with 1 tab -->
     <string name="open_tab_tray_single">Wócynjone rejtariki: %1$s. Pótusniśo, aby rejtariki pśešaltował.</string>
     <!-- Message announced to the user when tab tray is selected with 0 or 2+ tabs -->
@@ -93,6 +97,13 @@
     <!-- Text for the negative action button to dismiss the Close Tabs Banner. -->
     <string name="tab_tray_close_tabs_banner_negative_button_text">Zachyśiś</string>
 
+    <!-- Text for the banner message to tell users about our grid view feature. -->
+    <string name="tab_tray_grid_view_banner_message">Wubjeŕśo wugótowanje za wócynjone rejtariki. Pśejźćo k nastajenjam a wubjeŕśo kśidno pód rejtarikowym naglědom.</string>
+    <!-- Text for the positive action button to go to Settings for auto close tabs. -->
+    <string name="tab_tray_grid_view_banner_positive_button_text">K nastajenjam</string>
+    <!-- Text for the negative action button to dismiss the Close Tabs Banner. -->
+    <string name="tab_tray_grid_view_banner_negative_button_text">Zachyśiś</string>
+
     <!-- Home screen icons - Long press shortcuts -->
     <!-- Shortcut action to open new tab -->
     <string name="home_screen_shortcut_open_new_tab_2">Nowy rejtarik</string>
@@ -143,8 +154,6 @@
     <string name="browser_menu_find_in_page">Na boku pytaś</string>
     <!-- Browser menu button that creates a private tab -->
     <string name="browser_menu_private_tab">Priwatny rejtarik</string>
-    <!-- Browser menu button that creates a new tab -->
-    <string name="browser_menu_new_tab">Nowy rejtarik</string>
     <!-- Browser menu button that saves the current tab to a collection -->
     <string name="browser_menu_save_to_collection_2">Do zběrki składowaś</string>
     <!-- Browser menu button that open a share menu to share the current site -->
@@ -352,6 +361,12 @@
     <!-- Toast shown after confirming the custom add-on collection configuration -->
     <string name="toast_customize_addon_collection_done">Dodankowa zběrka jo se změniła. Nałoženje se kóńcy, aby se změny nałožyli…</string>
 
+    <!-- Add-on Installation from AMO-->
+    <!-- Error displayed when user attempts to install an add-on from AMO (addons.mozilla.org) that is not supported -->
+    <string name="addon_not_supported_error">Dodank se njepódpěra</string>
+    <!-- Error displayed when user attempts to install an add-on from AMO (addons.mozilla.org) that is already installed -->
+    <string name="addon_already_installed">Dodank jo južo zainstalowany.</string>
+
     <!-- Account Preferences -->
     <!-- Preference for triggering sync -->
     <string name="preferences_sync_now">Něnto synchronizěrowaś</string>
@@ -430,6 +445,10 @@
     <string name="preferences_marketing_data">Marketingowe daty</string>
     <!-- Preference description for marketing data collection, parameter is the app name (e.g. Firefox) -->
     <string name="preferences_marketing_data_description">Źěli daty wó tom, kótare funkcije w %1$s wužywaśo, z Leanplum, našym póbitowarjom za mobilny marketing.</string>
+    <!-- Title for studies preferences -->
+    <string name="preference_experiments_2">Studije</string>
+    <!-- Summary for studies preferences -->
+    <string name="preference_experiments_summary_2">Mozilla dowóliś, studije instalěrowaś a pśewjasć</string>
     <!-- Title for experiments preferences -->
     <string name="preference_experiments">Eksperimenty</string>
 
@@ -580,6 +599,8 @@
     <string name="tab_tray_title">Wócynjone rejtariki</string>
     <!-- Text shown in the menu for saving tabs to a collection -->
     <string name="tab_tray_menu_item_save">Do zběrki składowaś</string>
+    <!-- Text shown in the menu for the collection selector -->
+    <string name="tab_tray_menu_select">Wubraś</string>
     <!-- Text shown in the menu for sharing all tabs -->
     <string name="tab_tray_menu_item_share">Wšykne rejtariki źěliś</string>
     <!-- Text shown in the menu to view recently closed tabs -->
@@ -594,8 +615,18 @@
     <string name="tab_tray_menu_home">K startowej wobrazowce</string>
     <!-- Shortcut action to toggle private mode -->
     <string name="tab_tray_menu_toggle">Rejtarikowy modus pśešaltowaś</string>
+    <!-- Text shown in the multiselect menu for bookmarking selected tabs. -->
+    <string name="tab_tray_multiselect_menu_item_bookmark">Cytańske znamje</string>
+    <!-- Text shown in the multiselect menu for closing selected tabs. -->
+    <string name="tab_tray_multiselect_menu_item_close">Zacyniś</string>
+    <!-- Content description for tabs tray multiselect share button -->
+    <string name="tab_tray_multiselect_share_content_description">Wubrane rejtariki źěliś</string>
+    <!-- Content description for tabs tray multiselect menu -->
+    <string name="tab_tray_multiselect_menu_content_description">Meni wubranych rejtarikow</string>
     <!-- Content description (not visible, for screen readers etc.): Removes tab from collection button. Removes the selected tab from collection when pressed -->
     <string name="remove_tab_from_collection">Rejtaŕk ze zběrki wótwónoźeś</string>
+    <!-- Text for button to enter multiselect mode in tabs tray -->
+    <string name="tabs_tray_select_tabs">Rejtariki wubraś</string>
     <!-- Content description (not visible, for screen readers etc.): Close tab button. Closes the current session when pressed -->
     <string name="close_tab">Rejtarik zacyniś</string>
     <!-- Content description (not visible, for screen readers etc.): Close tab <title> button. First parameter is tab title  -->
@@ -691,18 +722,22 @@
     <string name="download_delete_all">Ześěgnjenja lašowaś</string>
     <!-- Text for the dialog to confirm clearing all downloads -->
     <string name="download_delete_all_dialog">Cośo napšawdu swóje ześěgnjenja lašowaś?</string>
-    <!-- Text for the snackbar to confirm that multiple downloads items have been deleted -->
-    <string name="download_delete_multiple_items_snackbar">Ześěgnjenja su wulašowane</string>
+    <!-- Text for the snackbar to confirm that multiple downloads items have been removed -->
+    <string name="download_delete_multiple_items_snackbar_1">Ześěgnjenja wótwónoźone</string>
+    <!-- Text for the snackbar to confirm that a single download item has been removed. The first parameter is the name of the download item. -->
+    <string name="download_delete_single_item_snackbar">%1$s jo se wótwónoźeł</string>
     <!-- Text shown when no download exists -->
-    <string name="download_empty_message">Žedne ześěgnjenja how</string>
+    <string name="download_empty_message_1">Žadne ześěgnjone dataje</string>
     <!-- History multi select title in app bar
     The first parameter is the number of downloads selected -->
     <string name="download_multi_select_title">Wubrane: %1$d</string>
 
     <!-- History overflow menu open in new tab button -->
     <string name="download_menu_open">Wócyniś</string>
-    <!-- Text for the button to delete a single history item -->
-    <string name="download_delete_item">Lašowaś</string>
+
+
+    <!-- Text for the button to remove a single download item -->
+    <string name="download_delete_item_1">Wótwónoźeś</string>
 
 
     <!-- Crashes -->
@@ -829,6 +864,8 @@
     <string name="preference_phone_feature_notification">Powěźeńka</string>
     <!-- Preference for altering the persistent storage access for all websites -->
     <string name="preference_phone_feature_persistent_storage">Trajny składowak</string>
+    <!-- Preference for altering the EME access for all websites -->
+    <string name="preference_phone_feature_media_key_system_access">Wopśimjeśe wóźone pśez DRM</string>
     <!-- Label that indicates that a permission must be asked always -->
     <string name="preference_option_phone_feature_ask_to_allow">Wó dowólnosć se pšašaś</string>
     <!-- Label that indicates that a permission must be blocked -->
@@ -968,6 +1005,12 @@
     <string name="snackbar_tab_closed">Rejtarik jo se zacynił</string>
     <!-- Text shown in snackbar when user closes all tabs -->
     <string name="snackbar_tabs_closed">Rejtariki su se zacynili</string>
+    <!-- Text shown in snackbar when user closes tabs -->
+    <string name="snackbar_message_tabs_closed">Rejtariki zacyjone!</string>
+    <!-- Text shown in snackbar when user bookmarks a list of tabs -->
+    <string name="snackbar_message_bookmarks_saved">Cytańske znamjenja su se składli!</string>
+    <!-- Text shown in snackbar action for viewing bookmarks -->
+    <string name="snackbar_message_bookmarks_view">Pokazaś</string>
     <!-- Text shown in snackbar when user adds a site to top sites -->
     <string name="snackbar_added_to_top_sites">Woblubowanym sedłam pśidane!</string>
     <!-- Text shown in snackbar when user closes a private tab -->

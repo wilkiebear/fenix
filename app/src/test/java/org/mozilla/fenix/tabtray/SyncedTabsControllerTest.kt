@@ -25,6 +25,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mozilla.fenix.R
+import org.mozilla.fenix.components.metrics.MetricController
 import org.mozilla.fenix.helpers.FenixRobolectricTestRunner
 import org.mozilla.fenix.sync.SyncedTabsViewHolder
 import org.mozilla.fenix.tabtray.TabTrayDialogFragmentAction.EnterMultiSelectMode
@@ -54,7 +55,7 @@ class SyncedTabsControllerTest {
         every { lifecycleOwner.lifecycle } returns lifecycle
 
         concatAdapter = mockk()
-        every { concatAdapter.addAdapter(any(), any()) } returns true
+        every { concatAdapter.addAdapter(any()) } returns true
         every { concatAdapter.removeAdapter(any()) } returns true
 
         store = TabTrayDialogFragmentStore(
@@ -65,8 +66,9 @@ class SyncedTabsControllerTest {
         )
 
         view = LayoutInflater.from(testContext).inflate(R.layout.about_list_item, null)
+        val metrics: MetricController = mockk()
         controller =
-            SyncedTabsController(lifecycleOwner, view, store, concatAdapter, coroutineContext)
+            SyncedTabsController(lifecycleOwner, view, store, concatAdapter, coroutineContext, metrics)
     }
 
     @After
@@ -129,11 +131,10 @@ class SyncedTabsControllerTest {
     @Test
     fun `concatAdapter updated on mode changes`() = testDispatcher.runBlockingTest {
         store.dispatch(EnterMultiSelectMode).joinBlocking()
-
         verify { concatAdapter.removeAdapter(any()) }
 
         store.dispatch(ExitMultiSelectMode).joinBlocking()
-
-        verify { concatAdapter.addAdapter(0, any()) }
+        // When returning from Multiselect the adapter should be added at the end
+        verify { concatAdapter.addAdapter(any()) }
     }
 }
